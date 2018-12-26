@@ -1,0 +1,214 @@
+{% extends 'demo/base.html' %}
+{% load bootstrap3 %}
+{% load static %} 
+{% block title %}
+
+
+
+    
+{% endblock %}
+{% block content %}
+<div class="col-lg-2">
+        
+        <div class="panel panel-default">
+            <div class="panel-body">
+                    <ul class="nav nav-stacked">
+                            <li role="presentation"><a href="{% url 'backend_charts' %}">HOME</a></li>   
+                            <li role="presentation"><a href="{% url 'Maynard' %}">Maynard Aubichon</a></li>
+                            <li role="presentation"><a href="{% url 'Hector' %}">Hector Bremner</a></li>
+                            <li role="presentation"><a href="{% url 'Golok' %}">Golok Z Buday</a></li>
+                            <li role="presentation"><a href="{% url 'Ping' %}">Ping Chan</a></li>
+                            <li role="presentation"><a href="{% url 'David' %}">David Chen</a></li>
+                            <li role="presentation"><a href="{% url 'Mike' %}">Mike Hansen</a></li>
+                            <li role="presentation"><a href="{% url 'Fred' %}">Fred Harding</a></li>
+                            <li role="presentation"><a href="{% url 'Angel' %}">Angela Dawson</a></li>
+                            <li role="presentation"><a href="{% url 'Satie' %}">Satie Shottha</a></li>
+                            <li role="presentation"><a href="{% url 'Ken' %}">Ken Sim</a></li>
+                            <li role="presentation"><a href="{% url 'Kenny' %}">Kenny Stewart</a></li>
+                            <li role="presentation"><a href="{% url 'Shauna' %}">Shauna Sylvester</a></li>
+                            <li role="presentation"><a href="{% url 'John' %}">John Yano</a></li>
+                            <li role="presentation"><a href="{% url 'Wai' %}">Wai Young</a></li>    
+
+                    </ul>
+            </div>
+        </div>
+        
+</div>
+
+    
+        
+    
+
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-8">
+                    <div class="panel panel-default">
+
+                            <div class="panel-body">
+                                <div class="col-md-3">
+                                    <img src="../../static/demo/stewart-kennedy-mayor-candidate-2018.png"  alt="bremner-hector-mayor-candidate-2018" />
+                                </div>
+                                <div class="col-md-5">
+                                        <h1>Kennedy Stewart </h1> 
+                                        <h3>Twitter@ kennedystewart</h3>
+                                </div>
+                                 
+                            </div>
+                    </div>
+            </div>
+            
+        </div>
+            <div class="col-md-4">
+                    <div class="panel panel-default">
+
+                            <div class="panel-body">
+                                    <div id="main" style="width: 500px;height:500px;">
+                
+                                    </div>
+                                 
+                            </div>
+                    </div>
+                
+                    <div id="main" style="width: 500px;height:500px;">
+                
+                        </div>
+                    
+            </div>
+            <div class="col-md-4">
+                    <div class="panel panel-default">
+                    <canvas id="canvas" width="470px"height="500px">
+            
+                        </canvas>
+                        
+                    </div>
+                        
+                        
+             </div>
+    
+            
+           
+            
+    </div>
+
+
+    
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 使用 static 关键字-->
+    
+    <script src="{% static '/demo/echarts.js' %}"></script>
+    <script src="{% static '/demo/wordcloud2.js' %}"></script>
+
+</head>
+</html>
+<body>
+    
+    
+        
+        
+
+    
+    <script type="text/javascript">
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        
+        // 指定图表的配置项和数据
+        var option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+    },
+    
+    series: [
+        {
+            name:'Kenny',
+            type:'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '20',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data:[
+                
+            {value:335, name:'Build Affordable Housing'},
+{value:425, name:'End the Opioid Crisis'},
+{value:50, name:'Support Small Business'},
+{value:744, name:'Others'}
+
+            ]
+        }
+    ]
+};
+
+
+    var wordFreqData =[
+    ['cdnpoli',1000],
+['vote',860],
+['oct',726],
+['proud',384],
+['yes',360],
+['endorses',351],
+['ndp',344],
+['thanks',318],
+['bcpoli',305],
+['vancouver',253],
+['kinder',242],
+['morgan',237],
+['vanpoli',222],
+['support',219],
+['trudeau',216],
+['feminist',183],
+['equalvoiceca',176],
+['donnadasko',174],
+['founder',172],
+['pipeline',145]
+
+
+
+];
+    var canvas = document.getElementById('canvas');
+    var options = eval({
+            "list": wordFreqData,//或者[['各位观众',45],['词云', 21],['来啦!!!',13]],只要格式满足这样都可以
+            "gridSize": 6, // 密集程度 数字越小越密集
+            "weightFactor": 0.2, // 字体大小=原始大小*weightFactor
+            "maxFontSize": 200, //最大字号
+            "minFontSize": 14, //最小字号
+            "fontWeight": 'normal', //字体粗细
+            "fontFamily": 'Times, serif', // 字体
+            "color": 'random-light', // 字体颜色 'random-dark' 或者 'random-light'
+            "backgroundColor": '#FFF', // 背景颜色
+            "rotateRatio": 0 // 字体倾斜(旋转)概率，1代表总是倾斜(旋转)
+        });
+    //生成
+    WordCloud(canvas, options);
+
+
+
+
+        // 使用刚指定的配置项和数据显示图表
+        myChart.setOption(option);
+        
+    </script>
+</body>
+
+{% endblock %}
